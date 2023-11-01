@@ -15,6 +15,7 @@ EXPOSE 80
 
 # Define environment variable
 ENV FLASK_APP app.py
-
+ARG POSTGRES_HOST_IP
+ENV POSTGRES_HOST_IP=$POSTGRES_HOST_IP
 # Run app.py when the container launches
 CMD ["flask", "run", "--host=0.0.0.0"]
