@@ -134,7 +134,8 @@ class Student(Resource):
             cursor.execute('SELECT * FROM students WHERE id = %s', (id,))
             student = cursor.fetchone()
             cursor.close()
-
+            if id <= 0:
+                return {'error': 'Invalid ID provided'}, 400  # Return a 400 Bad Request with an error message
             if student:
                 column_names = [desc[0] for desc in cursor.description]
                 student_dict = {column_names[i]: student[i] for i in range(len(column_names))}
@@ -159,8 +160,20 @@ class Student(Resource):
         """
         Atualizar aluno por ID
         """
+        if id <= 0:
+            return {'error': 'Invalid ID provided'}, 400  # Return a 400 Bad Request with an error message
+
         try:
             connection = establish_db_connection()
+            cursor = connection.cursor()
+            cursor.execute('SELECT * FROM students WHERE id = %s', (id,))
+            student = cursor.fetchone()
+            cursor.close()
+
+            if student is None:
+                connection.close()
+                return {'message': 'Aluno não encontrado'}, 404  # Return a 404 Not Found if the student is not found
+
             data = request.get_json()
             updated_data = {
                 column_mapping[column]: data.get(column) for column in column_mapping
@@ -177,10 +190,6 @@ class Student(Resource):
 
             cursor.execute(update_db, query_values)
 
-            if cursor.rowcount == 0:
-                connection.close()
-                return {'message': 'Aluno não encontrado'}, 404
-
             connection.commit()
             cursor.close()
             connection.close()
@@ -193,15 +202,20 @@ class Student(Resource):
         """
         Deletar aluno por ID
         """
+        if id <= 0:
+            return {'error': 'Invalid ID provided'}, 400  # Return a 400 Bad Request with an error message
+
         try:
             connection = establish_db_connection()
             cursor = connection.cursor()
-            cursor.execute('DELETE FROM students WHERE id = %s', (id))
-
-            if cursor.rowcount == 0:
+            # Check if the student exists before attempting to delete
+            cursor.execute('SELECT id FROM students WHERE id = %s', (id,))
+            student = cursor.fetchone()
+            if student is None:
                 connection.close()
                 return {'message': 'Aluno não encontrado'}, 404
 
+            cursor.execute('DELETE FROM students WHERE id = %s', (id,))
             connection.commit()
             cursor.close()
             connection.close()
