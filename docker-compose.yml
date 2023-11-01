@@ -6,6 +6,8 @@ services:
       POSTGRES_HOST_IP:
       POSTGRES_PASSWORD: samplepass
       POSTGRES_DB: students
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - "5432:5432"
     networks:
