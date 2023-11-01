@@ -17,7 +17,7 @@ services:
     ports:
       - "80:5000"
     environment:
-      - POSTGRES_HOST_IP: crudgen-db-1
+      - POSTGRES_HOST_IP=crudgen-db-1
       - POSTGRES_NAME=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=samplepass
