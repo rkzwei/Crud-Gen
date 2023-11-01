@@ -10,7 +10,7 @@ db_config = {
     "database": "students",
     "user": "postgres",
     "password": "samplepass",
-    "host": "localhost",
+    "host": "db",
     "port": "5432",
 }
 
