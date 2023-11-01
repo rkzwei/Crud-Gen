@@ -3,6 +3,7 @@ services:
   crudgen-db-1:
     image: postgres:latest
     environment:
+
       POSTGRES_PASSWORD: samplepass
     ports:
       - "5432:5432"
@@ -10,13 +11,17 @@ services:
       - crudgen
 
   crudgen-web-1:
+    restart: always
     build: .
     ports:
       - "80:5000"
+    environment:
+      - POSTGRES_NAME=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=samplepass
     depends_on:
       - crudgen-db-1
-    links:
-      - db:db
+  
     networks:
       - crudgen
 
