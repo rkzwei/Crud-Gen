@@ -1,6 +1,3 @@
--- Create the 'students' database
-CREATE DATABASE students;
-
 -- Connect to the 'students' database
 \c students;
 
