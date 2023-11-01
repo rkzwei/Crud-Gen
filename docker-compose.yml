@@ -12,7 +12,7 @@ services:
   crudgen-web-1:
     build: .
     ports:
-      - "8080:5000"
+      - "80:5000"
     depends_on:
       - crudgen-db-1
     networks:
