@@ -15,6 +15,8 @@ services:
       - "80:5000"
     depends_on:
       - crudgen-db-1
+    links:
+      - db:db
     networks:
       - crudgen
 
