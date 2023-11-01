@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_restx import Api, Resource, fields
 import psycopg2
+import os
 
 app = Flask(__name__)
 api = Api(app, version='1.0', title='API de Alunos', description='API para gerenciar notas, por Gabriel Neves')
@@ -10,7 +11,7 @@ db_config = {
     "database": "students",
     "user": "postgres",
     "password": "samplepass",
-    "host": "${POSTGRES_HOST_IP}",
+    "host": os.environ.get("POSTGRES_HOST_IP"),
     "port": "5432",
 }
 
