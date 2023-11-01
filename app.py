@@ -15,6 +15,15 @@ db_config = {
     "port": "5432",
 }
 
+column_mapping = {
+    'nome': 'nome',
+    'idade': 'idade',
+    'nota_primeiro_semestre': 'nota_primeiro_semestre',
+    'nota_segundo_semestre': 'nota_segundo_semestre',
+    'nome_professor': 'nome_professor',
+    'numero_sala': 'numero_sala'
+}
+
 def establish_db_connection():
     try:
         connection = psycopg2.connect(**db_config)
