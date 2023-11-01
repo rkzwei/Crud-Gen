@@ -176,6 +176,11 @@ class Student(Resource):
             query_values.append(id)
 
             cursor.execute(update_db, query_values)
+
+            if cursor.rowcount == 0:
+                connection.close()
+                return {'message': 'Aluno não encontrado'}, 404
+
             connection.commit()
             cursor.close()
             connection.close()
@@ -191,13 +196,19 @@ class Student(Resource):
         try:
             connection = establish_db_connection()
             cursor = connection.cursor()
-            cursor.execute('DELETE FROM students WHERE id = %s', (id,))
+            cursor.execute('DELETE FROM students WHERE id = %s', (id))
+
+            if cursor.rowcount == 0:
+                connection.close()
+                return {'message': 'Aluno não encontrado'}, 404
+
             connection.commit()
             cursor.close()
             connection.close()
             return {'message': 'Aluno deletado com sucesso'}
         except Exception as e:
             return {'error': str(e)}, 500
+
 
 if __name__ == '__main__':
     connection = establish_db_connection()
